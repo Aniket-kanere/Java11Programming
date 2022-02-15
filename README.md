@@ -1,4 +1,4 @@
-# Java11Programming 
+# java 11 features
 A list of java programs for practice purpose 
 
 ## Contributing
