@@ -15,23 +15,17 @@ import java.sql.*;
  */
 
 public class ReadArticle {
-    static final String DB_URL = "jdbc:mysql://localhost:3306/Dev?characterEncoding=utf8";
-    static final String USER_ID = "root";
-    static final String PASSWORD = "root";
-    static final String DRIVER_NAME = "com.mysql.jdbc.Driver";
 
-    static final String SELECT_QUERY = "select articleid , title , category from article";
 
-    public static void main(String args[])  {
-        Connection connection = null;
+
+    public static void main(String args[]) throws SQLException {
         Statement statement = null;
         ResultSet resultSet = null;
-        try {
-             Class.forName(DRIVER_NAME);
-             connection = DriverManager.getConnection(DB_URL, USER_ID, PASSWORD);
-             statement = connection.createStatement();
+        Connection connection = null;
 
-             resultSet = statement.executeQuery(SELECT_QUERY);
+             connection = ConnectionUtil.createConnection();
+             statement = connection.createStatement();
+             resultSet = statement.executeQuery(DbConstants.SELECT_QUERY);
 
             while (resultSet.next()) {
                 int articleid = resultSet.getInt(1);
@@ -41,24 +35,7 @@ public class ReadArticle {
                 System.out.println(articleid + " , " + articleName + " , " + category);
 
             }
-        }
-        catch (ClassNotFoundException classNotFoundException){
-            System.out.println("Exception occurred during loading the driver : "+ classNotFoundException.getMessage());
-        }
-        catch (SQLException sqlException){
-            System.out.println("SQL Exception :" + sqlException.getMessage());
-        }
-        finally{
-            try {
-                if(connection!= null) {
-                    connection.close();
-                }
-            }catch (SQLException sqlException){
-                System.out.println(sqlException.getMessage());
-            }
-        }
-
-
-
+        ConnectionUtil.closeConnection();
     }
+
 }
